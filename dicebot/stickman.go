@@ -26,8 +26,9 @@ func help(s *discordgo.Session, m *discordgo.MessageCreate) {
 		`Commands:
 * !sd help/list - show this 
 * !sd roll/regular/reg - roll the dice for normal tricks
-* !sd bowl/vert/pool/trans (coming soon) - roll the dice for transition tricks
-* !sd park/ledge/curb (coming soon) - roll the dice for grinds
+* !sd bowl/vert/pool/trans - roll the dice for transition tricks
+* !sd park/ledge/curb - roll the dice for grinds
+* !sd jb/malto/manual - roll the dice for malto manual shit
 * !sd letter - take a letter and forfeit the round
 * !sd reset - remove all of your levels
 * !sd submit + a video - a submission to judge
