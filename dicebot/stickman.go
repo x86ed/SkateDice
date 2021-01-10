@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 
@@ -36,6 +37,56 @@ func help(s *discordgo.Session, m *discordgo.MessageCreate) {
 	s.ChannelMessageSend(m.ChannelID, out)
 }
 
+func sub(s *discordgo.Session, m *discordgo.MessageCreate) {
+	if val, ok := sessions[m.Author.ID]; ok {
+		val.Msg = m.Message.ID
+		sessions[m.Author.ID] = val
+		archiveJSON(os.Getenv("SK8DICE"), &sessions)
+		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("<!@%s> Just submitted a %s. Vote by reacting to it with 😍 or 😡", m.Author.ID, val.Name))
+	}
+}
+
+func getName(dice []int, s *discordgo.Session, m *discordgo.MessageCreate, set [][]string) string {
+	if len(dice) < 5 {
+		return ""
+	}
+	lvl := getDif(m)
+	if len(set) < 1 {
+		set = qs[lvl.name]
+	}
+	desc := ""
+	if len(set) < 1 {
+		set = qs[lvl.name]
+	}
+	if dice[0] != 0 && dice[0] != 5 {
+		desc = set[0][dice[0]] + " "
+
+	}
+	if dice[1] != 0 && dice[1] != 5 {
+		desc += set[1][dice[1]] + " "
+
+	}
+	if dice[2] != 0 && dice[2] != 5 {
+		desc += set[2][dice[2]] + " "
+
+	}
+	if dice[3] != 0 && dice[3] != 5 {
+		desc += set[3][dice[3]] + " "
+
+	}
+	if lvl.color == 0xFF00FF {
+		if dice[4] != 0 && dice[4] != 5 {
+			desc += set[4][dice[4]] + " "
+
+		}
+		if dice[5] != 0 && dice[5] != 5 {
+			desc += set[5][dice[5]] + " "
+
+		}
+	}
+	return desc
+}
+
 func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) {
 	s1 := rand.NewSource(time.Now().UnixNano())
 	r1 := rand.New(s1)
@@ -45,6 +96,7 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 	i3 := r1.Intn(6)
 	i4 := r1.Intn(6)
 	i5 := r1.Intn(6)
+	desc := updateSession(s, m, []int{i0, i1, i2, i3, i4, i5}, set)
 	lvl := getDif(m)
 	if (i1 == 0 || i1 == 5) && (i2 == 0 || i2 == 5) && (i3 == 0 || i3 == 5) && (i0 == 0 || i0 == 5) && i0+i1+i2+i3 > 9 {
 		img := lucky[i4+i5%len(lucky)]
@@ -101,36 +153,7 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 		return
 	}
 	img := lucky[i4+i5%len(lucky)]
-	desc := ""
-	if len(set) < 1 {
-		set = qs[lvl.name]
-	}
-	if i0 != 0 && i0 != 5 {
-		desc = set[0][i0] + " "
 
-	}
-	if i1 != 0 && i1 != 5 {
-		desc += set[1][i1] + " "
-
-	}
-	if i2 != 0 && i2 != 5 {
-		desc += set[2][i2] + " "
-
-	}
-	if i3 != 0 && i3 != 5 {
-		desc += set[3][i3] + " "
-
-	}
-	if lvl.color == 0xFF00FF {
-		if i4 != 0 && i4 != 5 {
-			desc += set[4][i4] + " "
-
-		}
-		if i5 != 0 && i5 != 5 {
-			desc += set[5][i5] + " "
-
-		}
-	}
 	f := []*discordgo.MessageEmbedField{
 		{
 			Name:  "difficulty",
@@ -189,7 +212,7 @@ func reset(s *discordgo.Session, m *discordgo.MessageCreate) {
 func letter(s *discordgo.Session, m *discordgo.MessageCreate) {
 	desc, img := giveLetter(s, m, "https://i.ibb.co/WPqS8Jw/jarne.gif")
 	e := discordgo.MessageEmbed{
-		Color:       0xFFFF00,
+		Color:       0x000000,
 		Title:       "Take the L",
 		Description: desc,
 		URL:         "https://discord.gg/zq3fyV",
@@ -223,7 +246,8 @@ func getHandler(s string) func(s *discordgo.Session, m *discordgo.MessageCreate)
 		"letter": letter,
 		"help":   help,
 		"list":   help,
-		// "submit": sub,
+		"submit": sub,
+		"sub":    sub,
 	}
 	for i, v := range handlers {
 		if strings.HasPrefix(s, i) {

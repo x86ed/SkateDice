@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,14 +12,15 @@ import (
 )
 
 func main() {
-	// // Create a new Discord session using the provided bot token.
-	// if fileExists(os.Getenv("SK8DICE")) {
-	// 	dat, err := ioutil.ReadFile(os.Getenv("SK8DICE"))
-	// 	if err != nil {
-	// 		return
-	// 	}
-	// 	json.Unmarshal(dat, &cases)
-	// }
+	// Create a new Discord session using the provided bot token.
+
+	if fileExists(os.Getenv("SK8DICE")) {
+		dat, err := ioutil.ReadFile(os.Getenv("SK8DICE"))
+		if err != nil {
+			return
+		}
+		json.Unmarshal(dat, &sessions)
+	}
 
 	dg, err := discordgo.New("Bot " + os.Getenv("DICEID"))
 	if err != nil {

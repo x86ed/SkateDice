@@ -70,10 +70,6 @@ func hasRole(m *discordgo.MessageCreate, id string) bool {
 	return false
 }
 
-func setRole(m *discordgo.MessageCreate, id string) error {
-	return nil
-}
-
 func getLevel(m *discordgo.MessageCreate) int {
 	if hasRole(m, "795427084540968980") {
 		return 4
@@ -95,18 +91,18 @@ func getLevel(m *discordgo.MessageCreate) int {
 
 func getDif(m *discordgo.MessageCreate) difficulty {
 	if hasRole(m, "795528642151055400") {
-		return difficulty{0xFF00FF, "Yummy"}
+		return difficulty{0xFF00FF, "Yummy", 5}
 	}
 	if hasRole(m, "795528892613525544") {
-		return difficulty{0xFF0000, "Pro"}
+		return difficulty{0xFF0000, "Pro", 4}
 	}
 	if hasRole(m, "795529016831377468") {
-		return difficulty{0xFFFF00, "Am"}
+		return difficulty{0xFFFF00, "Am", 3}
 	}
 	if hasRole(m, "795529229613269022") {
-		return difficulty{0x00FF00, "Flow"}
+		return difficulty{0x00FF00, "Flow", 2}
 	}
-	return difficulty{0x666666, "Grom"}
+	return difficulty{0x666666, "Grom", 1}
 }
 
 func removeAllLetters(s *discordgo.Session, m *discordgo.MessageCreate) error {
@@ -138,6 +134,27 @@ func addLevel(s *discordgo.Session, m *discordgo.MessageCreate, r string) error 
 	return nil
 }
 
+func addDif(s *discordgo.Session, mA *discordgo.MessageReactionAdd) {
+	mm, err := s.ChannelMessage(mA.ChannelID, mA.MessageID)
+	if err != nil {
+		return
+	}
+	m := &discordgo.MessageCreate{Message: mm}
+	d := getDif(m)
+	if d.index >= 5 {
+		return
+	}
+	next := []string{
+		"",
+		"",
+		"795529229613269022",
+		"795529016831377468",
+		"795528892613525544",
+		"795528642151055400",
+	}
+	addLevel(s, m, next[d.index+1])
+}
+
 func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (string, string) {
 	lvl := getLevel(m)
 	lvl++
@@ -163,6 +180,43 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 		"E",
 	}
 	err := addLevel(s, m, lvls[lvl])
+	if err != nil {
+		return err.Error(), ""
+	}
+	return "Oof. you got a(n)" + ltr[lvl] + "!", img
+
+}
+
+func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img string) (string, string) {
+	mm, err := s.ChannelMessage(mA.ChannelID, mA.MessageID)
+	if err != nil {
+		return "", ""
+	}
+	m := &discordgo.MessageCreate{Message: mm}
+	lvl := getLevel(m)
+	lvl++
+	if lvl >= 4 {
+		err := removeAllLetters(s, m)
+		if err != nil {
+			log.Print(err)
+		}
+		return "You lose! Don't @me " + m.Message.Author.Username, "https://i.ibb.co/31bn5D8/SCRAPELINE-SMD-EPISODE-6.gif"
+	}
+	lvls := []string{
+		"795425922920480779",
+		"795426137248366603",
+		"795426286838218773",
+		"795426715056603157",
+		"795427084540968980",
+	}
+	ltr := []string{
+		"S",
+		"K",
+		"A",
+		"T",
+		"E",
+	}
+	err = addLevel(s, m, lvls[lvl])
 	if err != nil {
 		return err.Error(), ""
 	}
