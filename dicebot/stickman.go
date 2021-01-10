@@ -42,7 +42,7 @@ func sub(s *discordgo.Session, m *discordgo.MessageCreate) {
 		val.Msg = m.Message.ID
 		sessions[m.Author.ID] = val
 		archiveJSON(os.Getenv("SK8DICE"), &sessions)
-		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("<!@%s> Just submitted a %s. Vote by reacting to it with 😍 or 😡", m.Author.ID, val.Name))
+		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("<@!%s> Just submitted a %s. Vote by reacting to it with 😍 or 😡", m.Author.ID, val.Name))
 	}
 }
 

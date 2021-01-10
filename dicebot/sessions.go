@@ -27,7 +27,7 @@ func updateSession(s *discordgo.Session, m *discordgo.MessageCreate, dice []int,
 		m.Author.ID,
 		dice,
 		"",
-		2,
+		1,
 		0,
 	}
 	archiveJSON(os.Getenv("SK8DICE"), &sessions)
