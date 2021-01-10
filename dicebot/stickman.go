@@ -22,14 +22,15 @@ var prefixes = []string{
 func help(s *discordgo.Session, m *discordgo.MessageCreate) {
 	out := "```yaml\n" +
 		`Triggers:\n* 
-` + strings.Join(prefixes, "\n* ") +
-		`\nCommands:
+` + strings.Join(prefixes, "\n* ") + "\n" +
+		`Commands:
 * !sd help/list - show this 
 * !sd roll/regular/reg - roll the dice for normal tricks
 * !sd bowl/vert/pool/trans (coming soon) - roll the dice for transition tricks
 * !sd park/ledge/curb (coming soon) - roll the dice for grinds
 * !sd letter - take a letter and forfeit the round
 * !sd reset - remove all of your levels
+* !sd submit + a video - a submission to judge
 ` + "```"
 	s.ChannelMessageSend(m.ChannelID, out)
 }
@@ -44,7 +45,7 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 	i4 := r1.Intn(6)
 	i5 := r1.Intn(6)
 	lvl := getDif(m)
-	if i1 == 0 && i2 == 0 && i3 == 0 && i0 == 0 {
+	if (i1 == 0 || i1 == 5) && (i2 == 0 || i2 == 5) && (i3 == 0 || i3 == 5) && (i0 == 0 || i0 == 5) && i0+i1+i2+i3 > 9 {
 		img := lucky[i4+i5%len(lucky)]
 		f := []*discordgo.MessageEmbedField{
 			{
@@ -59,8 +60,8 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 			URL:         "https://discord.gg/zq3fyV",
 			Author: &discordgo.MessageEmbedAuthor{
 				URL:     "https://discord.gg/zq3fyV",
-				Name:    "GrossoBot",
-				IconURL: "https://i.ibb.co/4RBtbVC/grossobot.gif",
+				Name:    "SkateDice",
+				IconURL: "https://i.ibb.co/jfQPzfm/e8eaa325e2eab7aa995fb25c7bb34f30.jpg",
 			},
 			Fields: f,
 		}
@@ -70,7 +71,7 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 		s.ChannelMessageSendEmbed(m.ChannelID, &e)
 		return
 	}
-	if i1 == 5 && i2 == 5 && i3 == 5 && i0 == 5 {
+	if (i1 == 0 || i1 == 5) && (i2 == 0 || i2 == 5) && (i3 == 0 || i3 == 5) && (i0 == 0 || i0 == 5) {
 		desc, img := giveLetter(s, m, sucky[i4+i5%len(sucky)])
 		f := []*discordgo.MessageEmbedField{
 			{
@@ -85,8 +86,8 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 			URL:         "https://discord.gg/zq3fyV",
 			Author: &discordgo.MessageEmbedAuthor{
 				URL:     "https://discord.gg/zq3fyV",
-				Name:    "GrossoBot",
-				IconURL: "https://i.ibb.co/4RBtbVC/grossobot.gif",
+				Name:    "SkateDice",
+				IconURL: "https://i.ibb.co/jfQPzfm/e8eaa325e2eab7aa995fb25c7bb34f30.jpg",
 			},
 			Fields: f,
 		}
@@ -143,8 +144,8 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 		URL:         "https://discord.gg/zq3fyV",
 		Author: &discordgo.MessageEmbedAuthor{
 			URL:     "https://discord.gg/zq3fyV",
-			Name:    "GrossoBot",
-			IconURL: "https://i.ibb.co/4RBtbVC/grossobot.gif",
+			Name:    "SkateDice",
+			IconURL: "https://i.ibb.co/jfQPzfm/e8eaa325e2eab7aa995fb25c7bb34f30.jpg",
 		},
 		Fields: f,
 	}
@@ -159,6 +160,21 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 func regDice(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Print("regdice")
 	rollDice([][]string{}, s, m)
+}
+
+func vertDice(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Print("vertdice")
+	rollDice(vert, s, m)
+}
+
+func jbDice(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Print("manualdice")
+	rollDice(jb, s, m)
+}
+
+func ledDice(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Print("ledgedice")
+	rollDice(grind, s, m)
 }
 
 func reset(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -178,8 +194,8 @@ func letter(s *discordgo.Session, m *discordgo.MessageCreate) {
 		URL:         "https://discord.gg/zq3fyV",
 		Author: &discordgo.MessageEmbedAuthor{
 			URL:     "https://discord.gg/zq3fyV",
-			Name:    "GrossoBot",
-			IconURL: "https://i.ibb.co/4RBtbVC/grossobot.gif",
+			Name:    "SkateDice",
+			IconURL: "https://i.ibb.co/jfQPzfm/e8eaa325e2eab7aa995fb25c7bb34f30.jpg",
 		},
 	}
 	e.Image = &discordgo.MessageEmbedImage{
@@ -190,19 +206,23 @@ func letter(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 func getHandler(s string) func(s *discordgo.Session, m *discordgo.MessageCreate) {
 	handlers := map[string]func(s *discordgo.Session, m *discordgo.MessageCreate){
-		"reg":  regDice,
-		"roll": regDice,
-		// "vert": vertDice,
-		// "bowl": vertDice,
-		// "pool": vertDice,
-		// "trans": vertDice,
-		// "park": ledDice,
-		// "ledge": ledDice,
-		// "curb": ledDice,
+		"reg":    regDice,
+		"roll":   regDice,
+		"vert":   vertDice,
+		"bowl":   vertDice,
+		"pool":   vertDice,
+		"trans":  vertDice,
+		"park":   ledDice,
+		"ledge":  ledDice,
+		"curb":   ledDice,
+		"manual": jbDice,
+		"malto":  jbDice,
+		"jb":     jbDice,
 		"reset":  reset,
 		"letter": letter,
 		"help":   help,
 		"list":   help,
+		// "submit": sub,
 	}
 	for i, v := range handlers {
 		if strings.HasPrefix(s, i) {
