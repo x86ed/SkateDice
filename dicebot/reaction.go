@@ -8,6 +8,7 @@ import (
 
 // Reaction reaction roles
 func Reaction(s *discordgo.Session, m *discordgo.MessageReactionAdd) {
+	fmt.Println("sup?")
 	if m.UserID == s.State.User.ID {
 		return
 	}
