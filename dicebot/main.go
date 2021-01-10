@@ -32,6 +32,7 @@ func main() {
 	// fmt.Println(dir)
 	// Register the messageCreate func as a callback for MessageCreate events.
 	dg.AddHandler(Stickman)
+	dg.AddHandler(Reaction)
 
 	// In this example, we only care about receiving message events.
 	dg.Identify.Intents = discordgo.MakeIntent(discordgo.IntentsGuildMessages)
