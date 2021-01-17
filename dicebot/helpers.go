@@ -127,6 +127,7 @@ func removeAllLetters(s *discordgo.Session, m *discordgo.MessageCreate) error {
 }
 
 func addLevel(s *discordgo.Session, m *discordgo.MessageCreate, r string) error {
+	log.Print(m.GuildID, m.Author.ID, r)
 	err := s.GuildMemberRoleAdd(m.GuildID, m.Author.ID, r)
 	if err != nil {
 		return err
