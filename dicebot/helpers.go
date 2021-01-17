@@ -120,7 +120,8 @@ func removeAllLetters(s *discordgo.Session, m *discordgo.MessageCreate) error {
 	for _, v := range lvls {
 		err := s.GuildMemberRoleRemove(m.GuildID, m.Author.ID, v)
 		if err != nil {
-			return err
+			log.Print("err removing level ", v)
+			//return err
 		}
 	}
 	return nil
@@ -130,6 +131,7 @@ func addLevel(s *discordgo.Session, m *discordgo.MessageCreate, r string) error 
 	log.Print(m.GuildID, m.Author.ID, r)
 	err := s.GuildMemberRoleAdd(m.GuildID, m.Author.ID, r)
 	if err != nil {
+		log.Print("add lev err")
 		return err
 	}
 	return nil
@@ -162,6 +164,7 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 	if lvl >= 4 {
 		err := removeAllLetters(s, m)
 		if err != nil {
+			log.Print("couldn't remove letters")
 			log.Print(err)
 		}
 		return "You lose! Don't @me " + m.Message.Author.Username, "https://i.ibb.co/31bn5D8/SCRAPELINE-SMD-EPISODE-6.gif"
@@ -182,6 +185,7 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 	}
 	err := addLevel(s, m, lvls[lvl])
 	if err != nil {
+		log.Print("giv Letter err")
 		return err.Error(), ""
 	}
 	return "Oof. you got a(n)" + ltr[lvl] + "!", img
