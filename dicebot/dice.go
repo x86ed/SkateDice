@@ -371,8 +371,10 @@ func getTitle(t string) string {
 	t = strings.Replace(t, "fakie backside 360", "caballerial", -1)
 	t = strings.Replace(t, "fakie backside 180", "half cab", -1)
 	t = strings.Replace(t, "360 kickflip", "tre", -1)
-	t = strings.Replace(t, "regular", "", -1)
 	t = strings.Replace(t, "180 pop shuv", "pop shuv", -1)
 	t = strings.Replace(t, "180 shuv-it", "shuv-it", -1)
+	if t == "regular" || t == "frontside" || t == "backside" || t == "switch" {
+		t += " trick of your choice"
+	}
 	return t
 }
