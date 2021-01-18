@@ -172,6 +172,8 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 			log.Print("couldn't remove letters")
 			log.Print(err)
 		}
+		delete(sessions, m.Author.ID)
+		archiveJSON(os.Getenv("SK8DICE"), &sessions)
 		return "You lose! Don't @me " + m.Message.Author.Username, "https://i.ibb.co/31bn5D8/SCRAPELINE-SMD-EPISODE-6.gif", err
 	}
 	lvls := []string{
@@ -211,6 +213,8 @@ func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img str
 		if err != nil {
 			log.Print(err)
 		}
+		delete(sessions, m.Author.ID)
+		archiveJSON(os.Getenv("SK8DICE"), &sessions)
 		return "You lose! Don't @me " + m.Message.Author.Username, "https://i.ibb.co/31bn5D8/SCRAPELINE-SMD-EPISODE-6.gif", err
 	}
 	lvls := []string{

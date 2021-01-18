@@ -168,6 +168,9 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 	if desc == "" {
 		return
 	}
+	if desc == "regular" || desc == "frontside" || desc == "backside" || desc == "switch" {
+		desc += " trick of your choice"
+	}
 	e := discordgo.MessageEmbed{
 		Color:       lvl.color,
 		Title:       fmt.Sprintf("Do a %s.", getTitle(desc)),
