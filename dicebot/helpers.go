@@ -134,6 +134,8 @@ func addLevel(s *discordgo.Session, m *discordgo.MessageCreate, r string) error 
 		log.Print("add lev err")
 		return err
 	}
+	delete(sessions, m.Author.ID)
+	archiveJSON(os.Getenv("SK8DICE"), &sessions)
 	return nil
 }
 
