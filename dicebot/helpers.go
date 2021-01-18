@@ -160,6 +160,7 @@ func addDif(s *discordgo.Session, mA *discordgo.MessageReactionAdd) {
 
 func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (string, string) {
 	lvl := getLevel(m)
+	log.Printf("level: %d", lvl)
 	lvl++
 	if lvl >= 4 {
 		err := removeAllLetters(s, m)
@@ -199,6 +200,7 @@ func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img str
 	}
 	m := &discordgo.MessageCreate{Message: mm}
 	lvl := getLevel(m)
+	log.Printf("level: %d", lvl)
 	lvl++
 	if lvl >= 4 {
 		err := removeAllLetters(s, m)
