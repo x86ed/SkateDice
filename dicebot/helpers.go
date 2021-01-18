@@ -162,6 +162,7 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 	lvl := getLevel(m)
 	log.Printf("level letter: %d", lvl)
 	lvl++
+	log.Printf("level letter: %d", lvl)
 	if lvl >= 4 {
 		err := removeAllLetters(s, m)
 		if err != nil {
