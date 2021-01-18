@@ -165,6 +165,9 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 		},
 	}
 	log.Print(desc)
+	if desc == "" {
+		return
+	}
 	e := discordgo.MessageEmbed{
 		Color:       lvl.color,
 		Title:       fmt.Sprintf("Do a %s.", getTitle(desc)),
