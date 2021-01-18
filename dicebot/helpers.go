@@ -155,10 +155,11 @@ func addDif(s *discordgo.Session, mA *discordgo.MessageReactionAdd) {
 		"795528892613525544",
 		"795528642151055400",
 	}
+	// refactor
 	addLevel(s, m, next[d.index+1])
 }
 
-func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (string, string) {
+func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (string, string, error) {
 	lvl := getLevel(m)
 	log.Printf("level letter: %d", lvl)
 	lvl++
@@ -169,7 +170,7 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 			log.Print("couldn't remove letters")
 			log.Print(err)
 		}
-		return "You lose! Don't @me " + m.Message.Author.Username, "https://i.ibb.co/31bn5D8/SCRAPELINE-SMD-EPISODE-6.gif"
+		return "You lose! Don't @me " + m.Message.Author.Username, "https://i.ibb.co/31bn5D8/SCRAPELINE-SMD-EPISODE-6.gif", err
 	}
 	lvls := []string{
 		"795425922920480779",
@@ -188,16 +189,16 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 	err := addLevel(s, m, lvls[lvl])
 	if err != nil {
 		log.Print("giv Letter err")
-		return err.Error(), ""
+		return "", "", err
 	}
-	return "Oof. you got a(n)" + ltr[lvl] + "!", img
+	return "Oof. you got a(n)" + ltr[lvl] + "!", img, nil
 
 }
 
-func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img string) (string, string) {
+func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img string) (string, string, error) {
 	mm, err := s.ChannelMessage(mA.ChannelID, mA.MessageID)
 	if err != nil {
-		return "", ""
+		return "", "", err
 	}
 	m := &discordgo.MessageCreate{Message: mm}
 	lvl := getLevel(m)
@@ -208,7 +209,7 @@ func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img str
 		if err != nil {
 			log.Print(err)
 		}
-		return "You lose! Don't @me " + m.Message.Author.Username, "https://i.ibb.co/31bn5D8/SCRAPELINE-SMD-EPISODE-6.gif"
+		return "You lose! Don't @me " + m.Message.Author.Username, "https://i.ibb.co/31bn5D8/SCRAPELINE-SMD-EPISODE-6.gif", err
 	}
 	lvls := []string{
 		"795425922920480779",
@@ -226,8 +227,8 @@ func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img str
 	}
 	err = addLevel(s, m, lvls[lvl])
 	if err != nil {
-		return err.Error(), ""
+		return "", "", err
 	}
-	return "Oof. you got a(n)" + ltr[lvl] + "!", img
+	return "Oof. you got a(n)" + ltr[lvl] + "!", img, nil
 
 }

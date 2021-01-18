@@ -125,7 +125,11 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 		return
 	}
 	if (i1 == 0 || i1 == 5) && (i2 == 0 || i2 == 5) && (i3 == 0 || i3 == 5) && (i0 == 0 || i0 == 5) {
-		desc, img := giveLetter(s, m, sucky[i4+i5%len(sucky)])
+		desc, img, err := giveLetter(s, m, sucky[i4+i5%len(sucky)])
+		if err != nil {
+			log.Print(err)
+			return
+		}
 		f := []*discordgo.MessageEmbedField{
 			{
 				Name:  "difficulty",
@@ -210,7 +214,11 @@ func reset(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 func letter(s *discordgo.Session, m *discordgo.MessageCreate) {
-	desc, img := giveLetter(s, m, "https://i.ibb.co/WPqS8Jw/jarne.gif")
+	desc, img, err := giveLetter(s, m, "https://i.ibb.co/WPqS8Jw/jarne.gif")
+	if err != nil {
+		log.Print(err)
+		return
+	}
 	e := discordgo.MessageEmbed{
 		Color:       0x000000,
 		Title:       "Take the L",
