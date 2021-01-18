@@ -380,6 +380,8 @@ func getTitle(t string) string {
 		t == "frontside " ||
 		t == "backside " ||
 		t == "switch " ||
+		t == "fakie backside " ||
+		t == "fakie frontside " ||
 		t == "regular backside " ||
 		t == "regular frontside " ||
 		t == "switch backside " ||
