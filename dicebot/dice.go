@@ -1,6 +1,9 @@
 package main
 
-import "strings"
+import (
+	"log"
+	"strings"
+)
 
 var ez = [][]string{
 	{
@@ -376,5 +379,6 @@ func getTitle(t string) string {
 	if t == "regular" || t == "frontside" || t == "backside" || t == "switch" {
 		t += " trick of your choice"
 	}
+	log.Printf("'%s'", t)
 	return t
 }
