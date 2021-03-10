@@ -168,9 +168,6 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 	if desc == "" {
 		return
 	}
-	if desc == "regular" || desc == "frontside" || desc == "backside" || desc == "switch" {
-		desc += " trick of your choice"
-	}
 	e := discordgo.MessageEmbed{
 		Color:       lvl.color,
 		Title:       fmt.Sprintf("Do a %s.", getTitle(desc)),
@@ -214,8 +211,10 @@ func ledDice(s *discordgo.Session, m *discordgo.MessageCreate) {
 func reset(s *discordgo.Session, m *discordgo.MessageCreate) {
 	err := removeAllLetters(s, m)
 	if err != nil {
-		s.ChannelMessageSend(m.ChannelID, "Error resseting the user!")
+		s.ChannelMessageSend(m.ChannelID, "Error resetting the user!")
 	}
+	delete(sessions, m.Author.ID)
+	archiveJSON(os.Getenv("SK8DICE"), &sessions)
 	s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("<@!%s>'s game was reset!", m.Author.ID))
 }
 
