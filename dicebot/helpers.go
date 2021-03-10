@@ -204,11 +204,12 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 
 func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img string) (string, string, error) {
 	fmt.Printf(" sesh: %+v\n ma: %+v\n", s, mA)
-	// m,err:= s.GuildMember( )
+	mem, err := s.GuildMember(mA.GuildID, mA.UserID)
 	mm, err := s.ChannelMessage(mA.ChannelID, mA.MessageID)
 	if err != nil {
 		return "", "", err
 	}
+	mm.Member = mem
 	m := &discordgo.MessageCreate{Message: mm}
 	lvl := getLevel(m)
 	log.Printf("level: %d", lvl)
