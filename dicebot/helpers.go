@@ -64,6 +64,7 @@ func remove(slice []string, s int) []string {
 }
 
 func hasRole(m *discordgo.MessageCreate, id string) bool {
+	fmt.Println("roles ", m.Message.Member.Roles)
 	if containsVal(m.Message.Member.Roles, id) > -1 {
 		return true
 	}
