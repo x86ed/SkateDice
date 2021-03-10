@@ -65,8 +65,10 @@ func remove(slice []string, s int) []string {
 
 func hasRole(m *discordgo.MessageCreate, id string) bool {
 	fmt.Printf("roles %+v\n", m.Message)
-	if containsVal(m.Message.Member.Roles, id) > -1 {
-		return true
+	if m.Message.Member != nil {
+		if containsVal(m.Message.Member.Roles, id) > -1 {
+			return true
+		}
 	}
 	return false
 }
@@ -201,6 +203,8 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 }
 
 func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img string) (string, string, error) {
+	fmt.Printf(" sesh: %+v\n ma: %+v\n", s, mA)
+	// m,err:= s.GuildMember( )
 	mm, err := s.ChannelMessage(mA.ChannelID, mA.MessageID)
 	if err != nil {
 		return "", "", err
