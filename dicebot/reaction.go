@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -12,6 +13,7 @@ func Reaction(s *discordgo.Session, m *discordgo.MessageReactionAdd) {
 		return
 	}
 	if val, ok := sessions[m.UserID]; ok {
+		log.Printf(m.Emoji.Name)
 		if m.MessageID == val.Msg {
 			if m.Emoji.Name == "😡" {
 				fmt.Println("dis")
