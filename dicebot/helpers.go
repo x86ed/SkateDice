@@ -210,6 +210,7 @@ func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img str
 		return "", "", err
 	}
 	mm.Member = mem
+	mm.GuildID = mA.GuildID
 	m := &discordgo.MessageCreate{Message: mm}
 	lvl := getLevel(m)
 	log.Printf("level: %d", lvl)
