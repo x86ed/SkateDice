@@ -12,8 +12,6 @@ func Reaction(s *discordgo.Session, m *discordgo.MessageReactionAdd) {
 		return
 	}
 	if val, ok := sessions[m.UserID]; ok {
-		fmt.Println(m.Emoji.Name)
-		fmt.Println("rolez ", m.Emoji.Roles)
 		if m.MessageID == val.Msg {
 			if m.Emoji.Name == "😡" {
 				fmt.Println("dis")
