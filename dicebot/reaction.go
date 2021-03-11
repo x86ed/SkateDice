@@ -24,7 +24,6 @@ func Reaction(s *discordgo.Session, m *discordgo.MessageReactionAdd) {
 		return
 	}
 	if val, ok := sessions[om.Author.ID]; ok {
-		log.Printf("seshDebug")
 		if m.MessageID == val.Msg {
 			if m.Emoji.Name == "😡" {
 				fmt.Println("dis")

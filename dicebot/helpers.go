@@ -143,8 +143,8 @@ func addLevel(s *discordgo.Session, m *discordgo.MessageCreate, r string) error 
 }
 
 func addDif(s *discordgo.Session, mA *discordgo.MessageReactionAdd) {
-	mem, err := s.GuildMember(mA.GuildID, mA.UserID)
 	mm, err := s.ChannelMessage(mA.ChannelID, mA.MessageID)
+	mem, err := s.GuildMember(mA.GuildID, mm.Author.ID)
 	if err != nil {
 		return
 	}
