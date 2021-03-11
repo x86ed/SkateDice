@@ -164,7 +164,12 @@ func addDif(s *discordgo.Session, mA *discordgo.MessageReactionAdd) {
 		"795528642151055400",
 	}
 	// refactor
-	addLevel(s, m, next[d.index+1])
+	err = addLevel(s, m, next[d.index+1])
+	if err != nil {
+		log.Print("add level error")
+		return
+	}
+	s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("<@!%s> leveled up to <@&%s>!", mem.User.ID, next[d.index+1]))
 }
 
 func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (string, string, error) {
@@ -198,7 +203,7 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 	}
 	err := addLevel(s, m, lvls[lvl])
 	if err != nil {
-		log.Print("giv Letter err")
+		log.Print("give Letter err")
 		return "", "", err
 	}
 	return "Oof. you got a(n)" + ltr[lvl] + "!", img, nil
