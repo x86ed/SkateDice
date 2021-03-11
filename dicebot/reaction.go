@@ -9,7 +9,7 @@ import (
 
 // Reaction reaction roles
 func Reaction(s *discordgo.Session, m *discordgo.MessageReactionAdd) {
-	log.Printf("userID %s %+v", m.UserID, m.Emoji)
+	log.Printf("userID %s %+v %+v %+v", m.UserID, m.Emoji, m.MessageID, m.MessageReaction)
 	log.Println("State UserID", s.State.User.ID, s.State.User.Username)
 	if m.UserID == s.State.User.ID {
 		return
