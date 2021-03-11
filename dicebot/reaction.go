@@ -9,8 +9,7 @@ import (
 
 // Reaction reaction roles
 func Reaction(s *discordgo.Session, m *discordgo.MessageReactionAdd) {
-	log.Printf("userID %s %+v %+v %+v", m.UserID, m.Emoji, m.MessageID, m.MessageReaction)
-	log.Println("State UserID", s.State.User.ID, s.State.User.Username)
+	log.Printf("state %+v  message %+v\n", s, m)
 	mem, _ := s.GuildMember(m.GuildID, m.UserID)
 	mem2, _ := s.GuildMember(m.GuildID, s.State.User.ID)
 	log.Printf("Members %s %s\n ", mem.User.Username, mem2.User.Username)
