@@ -28,12 +28,14 @@ func Reaction(s *discordgo.Session, m *discordgo.MessageReactionAdd) {
 			if m.Emoji.Name == "😡" {
 				fmt.Println("dis")
 				val.Score--
+				updateSessionR(s, m, val.Needed, val.Score, val.Dice, [][]string{})
 				if val.Score <= 0-val.Needed {
 					giveLetterR(s, m, sucky[val.Dice[4]+val.Dice[5]%len(sucky)])
 				}
 			} else if m.Emoji.Name == "😍" {
 				fmt.Println("like")
 				val.Score++
+				updateSessionR(s, m, val.Needed, val.Score, val.Dice, [][]string{})
 				if val.Score >= val.Needed {
 					addDif(s, m)
 				}

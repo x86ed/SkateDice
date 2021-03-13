@@ -64,7 +64,6 @@ func remove(slice []string, s int) []string {
 }
 
 func hasRole(m *discordgo.MessageCreate, id string) bool {
-	fmt.Printf("roles %+v\n", m.Message.Member.Roles)
 	if m.Message.Member != nil {
 		if containsVal(m.Message.Member.Roles, id) > -1 {
 			return true
@@ -73,7 +72,7 @@ func hasRole(m *discordgo.MessageCreate, id string) bool {
 	return false
 }
 
-func getLevel(m *discordgo.MessageCreate) int {
+func getLetter(m *discordgo.MessageCreate) int {
 	if hasRole(m, "795427084540968980") {
 		return 4
 	}
@@ -173,7 +172,7 @@ func addDif(s *discordgo.Session, mA *discordgo.MessageReactionAdd) {
 }
 
 func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (string, string, error) {
-	lvl := getLevel(m)
+	lvl := getLetter(m)
 	log.Printf("level letter: %d", lvl)
 	lvl++
 	log.Printf("level letter: %d", lvl)
@@ -220,7 +219,7 @@ func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img str
 	mm.Member = mem
 	mm.GuildID = mA.GuildID
 	m := &discordgo.MessageCreate{Message: mm}
-	lvl := getLevel(m)
+	lvl := getLetter(m)
 	log.Printf("level: %d", lvl)
 	lvl++
 	if lvl >= 4 {
