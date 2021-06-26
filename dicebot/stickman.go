@@ -253,7 +253,7 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 		s.ChannelMessageSendEmbed(m.ChannelID, &e)
 		return
 	}
-	img := lucky[i4+i5%len(lucky)]
+	img := getImg(m, i0, i1, i2, i3, i4, i5, set)
 
 	f := []*discordgo.MessageEmbedField{
 		{
