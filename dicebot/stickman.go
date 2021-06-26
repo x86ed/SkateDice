@@ -87,6 +87,103 @@ func getName(dice []int, s *discordgo.Session, m *discordgo.MessageCreate, set [
 	return desc
 }
 
+func getImg(m *discordgo.MessageCreate, i0, i1, i2, i3, i4, i5 int, set [][]string) string {
+	lvl := getDif(m)
+	if len(set) < 1 {
+		set = qs[lvl.name]
+	}
+	var v0, v1, v2, v3, v4, v5, output string
+	if i0 > 0 && i0 < 5 {
+		v0 = set[0][i0]
+	}
+	if i1 > 0 && i1 < 5 {
+		v1 = set[1][i1]
+	}
+	if i2 > 0 && i2 < 5 {
+		v2 = set[2][i2]
+	}
+	if i3 > 0 && i3 < 5 {
+		v3 = set[3][i3]
+	}
+	if i4 > 0 && i4 < 5 {
+		v4 = set[4][i4]
+	}
+	if i5 > 0 && i5 < 5 {
+		v5 = set[5][i5]
+	}
+
+	if v0 == "fakie" {
+		output = "https://i.ibb.co/d4NfG6z/fakie.gif"
+	}
+
+	if v0 == "nollie" {
+		output = "https://i.ibb.co/PYLqb2X/nollie.gif"
+	}
+
+	if v0 == "switch" {
+		output = "https://i.ibb.co/VNHBdH5/switch.gif"
+	}
+
+	if v3 == "kickflip" {
+		output = "https://i.ibb.co/r6RNQP4/flip.gif"
+		if v1 == "frontside" {
+			output = "https://i.ibb.co/M2h7RLf/fs-flip.gif"
+		}
+		if v1 == "backside" {
+			output = "https://i.ibb.co/GQHmKMn/bs-flip.gif"
+		}
+		if v2 == "360" {
+			output = "https://i.ibb.co/SXrmc3S/quiztreflip.gif"
+		}
+		if v2 == "180" {
+			output = "https://i.ibb.co/zFz5bv2/fs-flip.gif"
+		}
+		if v2 == "big" {
+			output = "https://i.ibb.co/PmJX75S/big-flip.gif"
+		}
+		if v2 == "shuv" {
+			output = "https://i.ibb.co/C03v02H/quizvarialflip2.gif"
+			if v1 == "frontside" {
+				output = "https://i.ibb.co/wNgC4qD/hardflip.gif"
+			}
+		}
+	}
+	if v3 == "heel" {
+		output = "https://i.ibb.co/vwD5b6w/heel.gif"
+		if v1 == "frontside" {
+			output = "https://i.ibb.co/mbt2YJC/fs-heel.gif"
+		}
+		if v1 == "backside" {
+			output = "https://i.ibb.co/VSPFjgg/bs-heel.gif"
+		}
+		if v2 == "360" {
+			output = "https://i.ibb.co/VM0Z9QG/laserflip.gif"
+		}
+		if v2 == "180" {
+			output = "https://i.ibb.co/PNFhgT4/fs-heel.gif"
+		}
+		if v2 == "big" {
+			output = "https://i.ibb.co/7JY5pJ8/bigheel.gif"
+		}
+		if v2 == "shuv" {
+			output = "https://i.ibb.co/rMpxgxk/inwardheel.gif"
+		}
+	}
+	if v4 == "no comply" {
+		output = "https://i.ibb.co/sq0MSWP/nocomply.gif"
+	}
+	if v4 == "double" {
+		output = "https://i.ibb.co/b32bDXX/nightmare.gif"
+	}
+	if v5 == "grab" {
+		output = "https://i.ibb.co/34zQRss/grabby.gif"
+	}
+	if v5 == "rewind" {
+		output = "https://i.ibb.co/wR4fX2r/ghettobird.gif"
+	}
+	return output
+}
+
 func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) {
 	s1 := rand.NewSource(time.Now().UnixNano())
 	r1 := rand.New(s1)
