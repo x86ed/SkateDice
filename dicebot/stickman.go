@@ -124,6 +124,10 @@ func getImg(m *discordgo.MessageCreate, i0, i1, i2, i3, i4, i5 int, set [][]stri
 		output = "https://i.ibb.co/VNHBdH5/switch.gif"
 	}
 
+	if v2 == "shuv" {
+		output = ""
+	}
+
 	if v3 == "kickflip" {
 		output = "https://i.ibb.co/r6RNQP4/flip.gif"
 		if v1 == "frontside" {
@@ -169,16 +173,16 @@ func getImg(m *discordgo.MessageCreate, i0, i1, i2, i3, i4, i5 int, set [][]stri
 			output = "https://i.ibb.co/rMpxgxk/inwardheel.gif"
 		}
 	}
-	if v4 == "no comply" {
+	if v4 == "no comply" && lvl.index > 3 {
 		output = "https://i.ibb.co/sq0MSWP/nocomply.gif"
 	}
-	if v4 == "double" {
+	if v4 == "double" && lvl.index > 3 {
 		output = "https://i.ibb.co/b32bDXX/nightmare.gif"
 	}
-	if v5 == "grab" {
+	if v5 == "grab" && lvl.index > 4 {
 		output = "https://i.ibb.co/34zQRss/grabby.gif"
 	}
-	if v5 == "rewind" {
+	if v5 == "rewind" && lvl.index > 4 {
 		output = "https://i.ibb.co/wR4fX2r/ghettobird.gif"
 	}
 	return output
