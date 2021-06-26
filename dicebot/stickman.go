@@ -125,7 +125,10 @@ func getImg(m *discordgo.MessageCreate, i0, i1, i2, i3, i4, i5 int, set [][]stri
 	}
 
 	if v2 == "shuv" {
-		output = ""
+		output = "https://i.ibb.co/CQv6XCq/shuv.gif"
+		if v1 == "frontside" {
+			output = "https://i.ibb.co/xqCnqXc/fs-shuv.gif"
+		}
 	}
 
 	if v3 == "kickflip" {
