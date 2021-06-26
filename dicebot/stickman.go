@@ -196,7 +196,7 @@ func rollDice(set [][]string, s *discordgo.Session, m *discordgo.MessageCreate) 
 	lvl := getDif(m)
 	desc := updateSession(s, m, lvl.index, 0, []int{i0, i1, i2, i3, i4, i5}, set)
 	if (i1 == 0 || i1 == 5) && (i2 == 0 || i2 == 5) && (i3 == 0 || i3 == 5) && (i0 == 0 || i0 == 5) && i0+i1+i2+i3 > 9 {
-		img := lucky[i4+i5%len(lucky)]
+		img := getImg(m, i0, i1, i2, i3, i4, i5, set)
 		f := []*discordgo.MessageEmbedField{
 			{
 				Name:  "difficulty",
