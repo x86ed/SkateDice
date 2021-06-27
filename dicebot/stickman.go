@@ -112,6 +112,8 @@ func getImg(m *discordgo.MessageCreate, i0, i1, i2, i3, i4, i5 int, set [][]stri
 		v5 = set[5][i5]
 	}
 
+	output = lucky[i0+i5%len(lucky)]
+
 	if v0 == "fakie" {
 		output = "https://i.ibb.co/d4NfG6z/fakie.gif"
 		if v1 == "backside" {
@@ -130,6 +132,14 @@ func getImg(m *discordgo.MessageCreate, i0, i1, i2, i3, i4, i5 int, set [][]stri
 
 	if v0 == "switch" {
 		output = "https://i.ibb.co/VNHBdH5/switch.gif"
+	}
+
+	if v1 == "frontside" {
+		output = "https://i.ibb.co/s3R0BdD/fsno.gif"
+	}
+
+	if v1 == "backside" {
+		output = "https://i.ibb.co/fD4C193/f51cd6569ef8568343d979d7aed71393.gif"
 	}
 
 	if v2 == "shuv" {
