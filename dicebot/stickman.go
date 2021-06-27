@@ -114,6 +114,14 @@ func getImg(m *discordgo.MessageCreate, i0, i1, i2, i3, i4, i5 int, set [][]stri
 
 	if v0 == "fakie" {
 		output = "https://i.ibb.co/d4NfG6z/fakie.gif"
+		if v1 == "backside" {
+			if v2 == "360" {
+				output = "https://i.ibb.co/2nVd6Qx/cab.gif"
+			}
+			if v2 == "180" {
+				output = "https://i.ibb.co/Jy4W3kx/tumblr-poqg1pgvx-O1ri61l0o1-400.gif"
+			}
+		}
 	}
 
 	if v0 == "nollie" {
@@ -128,6 +136,20 @@ func getImg(m *discordgo.MessageCreate, i0, i1, i2, i3, i4, i5 int, set [][]stri
 		output = "https://i.ibb.co/CQv6XCq/shuv.gif"
 		if v1 == "frontside" {
 			output = "https://i.ibb.co/xqCnqXc/fs-shuv.gif"
+		}
+	}
+
+	if v2 == "180" {
+		output = "https://i.ibb.co/hD1m7jv/fs-180.gif"
+		if v1 == "backside" {
+			output = "https://i.ibb.co/xX449xZ/bs-180.gif"
+		}
+	}
+
+	if v2 == "360" {
+		output = "https://i.ibb.co/HCT7YqT/fs-360.gif"
+		if v1 == "backside" {
+			output = "https://i.ibb.co/MZBb3WH/bs-360.gif"
 		}
 	}
 
