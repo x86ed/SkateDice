@@ -2,13 +2,20 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
+)
+
+var (
+	GuildID        = flag.String("guild", "", "Test guild ID. If not passed - bot registers commands globally")
+	RemoveCommands = flag.Bool("rmcmd", true, "Remove all commands after shutdowning or not")
 )
 
 func main() {
@@ -45,6 +52,13 @@ func main() {
 	if err != nil {
 		fmt.Println("error opening connection,", err)
 		return
+	}
+
+	for _, v := range commands {
+		_, err := dg.ApplicationCommandCreate(s.State.User.ID, *GuildID, v)
+		if err != nil {
+			log.Panicf("Cannot create '%v' command: %v", v.Name, err)
+		}
 	}
 
 	// Wait here until CTRL-C or other term signal is received.
