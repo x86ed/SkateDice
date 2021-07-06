@@ -119,8 +119,9 @@ func removeAllLetters(s *discordgo.Session, m *discordgo.MessageCreate) error {
 		"795529016831377468",
 		"795529229613269022",
 	}
+	c, _ := s.State.Channel(m.ChannelID)
 	for _, v := range lvls {
-		err := s.GuildMemberRoleRemove(m.GuildID, m.Author.ID, v)
+		err := s.GuildMemberRoleRemove(c.GuildID, m.Author.ID, v)
 		if err != nil {
 			log.Print("err removing level ", v)
 			//return err
@@ -131,7 +132,8 @@ func removeAllLetters(s *discordgo.Session, m *discordgo.MessageCreate) error {
 
 func addLevel(s *discordgo.Session, m *discordgo.MessageCreate, r string) error {
 	log.Print(r)
-	err := s.GuildMemberRoleAdd(m.GuildID, m.Author.ID, r)
+	c, _ := s.State.Channel(m.ChannelID)
+	err := s.GuildMemberRoleAdd(c.GuildID, m.Author.ID, r)
 	if err != nil {
 		log.Print("add lev err")
 		return err
@@ -143,12 +145,13 @@ func addLevel(s *discordgo.Session, m *discordgo.MessageCreate, r string) error 
 
 func addDif(s *discordgo.Session, mA *discordgo.MessageReactionAdd) {
 	mm, err := s.ChannelMessage(mA.ChannelID, mA.MessageID)
-	mem, err := s.GuildMember(mA.GuildID, mm.Author.ID)
+	c, _ := s.State.Channel(mA.ChannelID)
+	mem, err := s.GuildMember(c.GuildID, mm.Author.ID)
 	if err != nil {
 		return
 	}
-	mm.Member = mem
-	mm.GuildID = mA.GuildID
+
+	mm.ChannelID = mA.ChannelID
 	m := &discordgo.MessageCreate{Message: mm}
 	d := getDif(m)
 	if d.index >= 5 {
@@ -211,13 +214,12 @@ func giveLetter(s *discordgo.Session, m *discordgo.MessageCreate, img string) (s
 
 func giveLetterR(s *discordgo.Session, mA *discordgo.MessageReactionAdd, img string) (string, string, error) {
 	fmt.Printf(" sesh: %+v\n ma: %+v\n", s, mA)
-	mem, err := s.GuildMember(mA.GuildID, mA.UserID)
 	mm, err := s.ChannelMessage(mA.ChannelID, mA.MessageID)
 	if err != nil {
 		return "", "", err
 	}
-	mm.Member = mem
-	mm.GuildID = mA.GuildID
+
+	mm.ChannelID = mA.ChannelID
 	m := &discordgo.MessageCreate{Message: mm}
 	lvl := getLetter(m)
 	log.Printf("level: %d", lvl)
