@@ -55,7 +55,7 @@ func main() {
 	}
 
 	for _, v := range commands {
-		_, err := dg.ApplicationCommandCreate(s.State.User.ID, *GuildID, v)
+		_, err := dg.ApplicationCommandCreate(dg.State.User.ID, *GuildID, v)
 		if err != nil {
 			log.Panicf("Cannot create '%v' command: %v", v.Name, err)
 		}
